@@ -13,7 +13,7 @@ public class ProductDataBuilder {
     private Money money = new MoneyBuilder().build();
     private String name = "Product";
     private Date date = new Date();
-    private ProductType productType = ProductType.STANDARD;
+    private ProductType productType = ProductType.FOOD;
 
     public ProductDataBuilder() {
     }

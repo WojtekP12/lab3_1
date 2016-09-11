@@ -7,9 +7,9 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 public class MoneyBuilder {
 
-    private BigDecimal denomination = new BigDecimal(1000);
+    private BigDecimal denomination = new BigDecimal(100);
 
-    private String currencyCode = "EUR";
+    private String currencyCode = "USD";
 
     public MoneyBuilder() {
     }

@@ -12,9 +12,9 @@ import pl.com.bottega.ecommerce.sharedkernel.Money;
 public class RequestItemBuilder {
 	
     private ProductData productData = new ProductData(Id.generate(),
-            new Money(new BigDecimal("1000"), "EUR"), "Product", ProductType.STANDARD, new Date());
+            new Money(new BigDecimal("100"), "USD"), "Product", ProductType.FOOD, new Date());
     private int quantity = 1;
-    private Money money = new Money(new BigDecimal("1000"), "EUR");
+    private Money money = new Money(new BigDecimal("100"), "USD");
 
     public RequestItemBuilder() {
     }

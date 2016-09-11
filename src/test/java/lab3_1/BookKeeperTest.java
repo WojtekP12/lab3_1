@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.Date;
-
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,18 +14,15 @@ import pl.com.bottega.ecommerce.application.api.builder.InvoiceRequestBuilder;
 import pl.com.bottega.ecommerce.application.api.builder.ProductDataBuilder;
 import pl.com.bottega.ecommerce.application.api.builder.RequestItemBuilder;
 import pl.com.bottega.ecommerce.application.api.builder.TaxBuilder;
-import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.ClientData;
-import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.BookKeeper;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.Invoice;
-import pl.com.bottega.ecommerce.sales.domain.invoicing.InvoiceFactory;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.InvoiceRequest;
-import pl.com.bottega.ecommerce.sales.domain.invoicing.Tax;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.TaxPolicy;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductData;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductType;
 import pl.com.bottega.ecommerce.sharedkernel.Money;
 import pl.com.bottega.ecommerce.sales.domain.invoicing.RequestItem;
+
 public class BookKeeperTest {
 
 	private BookKeeper bookKeeper;
@@ -85,11 +80,11 @@ public class BookKeeperTest {
 		invoiceRequest.add(item);
 
 		Invoice invoice = bookKeeper.issuance(invoiceRequest, taxPolicy);
-		assertThat(invoice.getGros(), Matchers.is(new Money(new BigDecimal(2000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getNet(), Matchers.is(new Money(new BigDecimal(1000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getItems().get(0).getGros(), Matchers.is(new Money(new BigDecimal(2000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getItems().get(0).getNet(), Matchers.is(new Money(new BigDecimal(1000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getItems().get(0).getTax().getAmount(), Matchers.is(new Money(new BigDecimal(1000), Currency.getInstance("EUR"))));
+		assertThat(invoice.getGros(), Matchers.is(new Money(new BigDecimal(200), Currency.getInstance("USD"))));
+		assertThat(invoice.getNet(), Matchers.is(new Money(new BigDecimal(100), Currency.getInstance("USD"))));
+		assertThat(invoice.getItems().get(0).getGros(), Matchers.is(new Money(new BigDecimal(200), Currency.getInstance("USD"))));
+		assertThat(invoice.getItems().get(0).getNet(), Matchers.is(new Money(new BigDecimal(100), Currency.getInstance("USD"))));
+		assertThat(invoice.getItems().get(0).getTax().getAmount(), Matchers.is(new Money(new BigDecimal(100), Currency.getInstance("USD"))));
 		Mockito.verify(taxPolicy, Mockito.times(1)).calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class));
 	}
 

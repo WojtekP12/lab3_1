@@ -6,7 +6,7 @@ import pl.com.bottega.ecommerce.sales.domain.invoicing.Tax;
 import pl.com.bottega.ecommerce.sharedkernel.Money;
 
 public class TaxBuilder {
-    private Money money = new Money(new BigDecimal("1000"), "EUR");
+    private Money money = new Money(new BigDecimal("100"), "USD");
     private String description = "Description";
 
     public TaxBuilder() {
