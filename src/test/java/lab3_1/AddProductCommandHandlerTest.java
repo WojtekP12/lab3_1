@@ -1,6 +1,9 @@
 package lab3_1;
 
 import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
 import pl.com.bottega.ecommerce.canonicalmodel.publishedlanguage.Id;
 import pl.com.bottega.ecommerce.sales.application.api.command.AddProductCommand;
 import pl.com.bottega.ecommerce.sales.application.api.handler.AddProductCommandHandler;
@@ -8,6 +11,7 @@ import pl.com.bottega.ecommerce.sales.application.api.handler.AddProductCommandH
 import pl.com.bottega.ecommerce.sales.domain.client.ClientRepository;
 import pl.com.bottega.ecommerce.sales.domain.equivalent.SuggestionService;
 import pl.com.bottega.ecommerce.sales.domain.productscatalog.ProductRepository;
+import pl.com.bottega.ecommerce.sales.domain.reservation.Reservation;
 import pl.com.bottega.ecommerce.sales.domain.reservation.ReservationRepository;
 import pl.com.bottega.ecommerce.system.application.SystemContext;
 
@@ -37,6 +41,13 @@ public class AddProductCommandHandlerTest
 
         productCommandHandler.handle(productCommand);
     }
-
+    
+    @Test
+    public void ReservationRespository_NumberOfCallsTest()
+    {
+        Mockito.verify(reservationRepository, Mockito.times(1)).load(new Id("1"));
+        Mockito.verify(reservationRepository, Mockito.times(1)).save(Mockito.any(Reservation.class));
+    }
+	
 
 }
