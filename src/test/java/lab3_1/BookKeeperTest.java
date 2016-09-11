@@ -38,14 +38,14 @@ public class BookKeeperTest {
 		invoiceRequest = new InvoiceRequest(new ClientData(Id.generate(), "Client"));
 		
 		Mockito.when(taxPolicy.calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class)))
-		   .thenReturn(new Tax(new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Podatek za cos tam."));
+		       .thenReturn(new Tax(new Money(new BigDecimal(100), Currency.getInstance("USD")), "Podatek"));
 	}
 
 	@Test
 	public void firstTestCase() {
 	
-		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Standard", ProductType.STANDARD,new Date());
-		Money totalCost = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
+		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(100), Currency.getInstance("USD")), "FOOD", ProductType.FOOD,new Date());
+		Money totalCost = new Money(new BigDecimal(100), Currency.getInstance("USD"));
 		RequestItem item = new RequestItem(productData, 10, totalCost);
 		invoiceRequest.add(item);
 
@@ -57,13 +57,13 @@ public class BookKeeperTest {
 	@Test
 	public void secondTestCase() {
 		
-		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Standard", ProductType.STANDARD,new Date());
-		Money totalCost = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
-		RequestItem item = new RequestItem(productData, 10, totalCost);
+		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(100), Currency.getInstance("USD")), "FOOD", ProductType.FOOD,new Date());
+		Money totalCost = new Money(new BigDecimal(100), Currency.getInstance("USD"));
+		RequestItem item = new RequestItem(productData, 5, totalCost);
 		
-		ProductData productData2 = new ProductData(Id.generate(),new Money(new BigDecimal(2000), Currency.getInstance("EUR")), "Drug", ProductType.DRUG,new Date());
-		Money totalCost2 = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
-		RequestItem item2 = new RequestItem(productData2, 5, totalCost2);
+		ProductData productData2 = new ProductData(Id.generate(),new Money(new BigDecimal(200), Currency.getInstance("USD")), "Drug", ProductType.DRUG,new Date());
+		Money totalCost2 = new Money(new BigDecimal(100), Currency.getInstance("USD"));
+		RequestItem item2 = new RequestItem(productData2, 8, totalCost2);
 		invoiceRequest.add(item);
 		invoiceRequest.add(item2);
 
@@ -82,17 +82,17 @@ public class BookKeeperTest {
 	@Test
 	public void fourthTestCase() {
 		
-		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Standard", ProductType.STANDARD,new Date());
-		Money totalCost = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
+		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(1000), Currency.getInstance("USD")), "Standard", ProductType.STANDARD,new Date());
+		Money totalCost = new Money(new BigDecimal(10000), Currency.getInstance("USD"));
 		RequestItem item = new RequestItem(productData, 10, totalCost);
 		invoiceRequest.add(item);
 
 		Invoice invoice = bookKeeper.issuance(invoiceRequest, taxPolicy);
-		assertThat(invoice.getGros(), Matchers.is(new Money(new BigDecimal(11000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getNet(), Matchers.is(new Money(new BigDecimal(10000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getItems().get(0).getGros(), Matchers.is(new Money(new BigDecimal(11000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getItems().get(0).getNet(), Matchers.is(new Money(new BigDecimal(10000), Currency.getInstance("EUR"))));
-		assertThat(invoice.getItems().get(0).getTax().getAmount(), Matchers.is(new Money(new BigDecimal(1000), Currency.getInstance("EUR"))));
+		assertThat(invoice.getGros(), Matchers.is(new Money(new BigDecimal(10100), Currency.getInstance("USD"))));
+		assertThat(invoice.getNet(), Matchers.is(new Money(new BigDecimal(10000), Currency.getInstance("USD"))));
+		assertThat(invoice.getItems().get(0).getGros(), Matchers.is(new Money(new BigDecimal(10100), Currency.getInstance("USD"))));
+		assertThat(invoice.getItems().get(0).getNet(), Matchers.is(new Money(new BigDecimal(10000), Currency.getInstance("USD"))));
+		assertThat(invoice.getItems().get(0).getTax().getAmount(), Matchers.is(new Money(new BigDecimal(100), Currency.getInstance("USD"))));
 		Mockito.verify(taxPolicy, Mockito.times(1)).calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class));
 	}
 
