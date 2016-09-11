@@ -36,13 +36,14 @@ public class BookKeeperTest {
 		invoiceFactory = new InvoiceFactory();
 		bookKeeper = new BookKeeper(invoiceFactory);
 		invoiceRequest = new InvoiceRequest(new ClientData(Id.generate(), "Client"));
+		
+		Mockito.when(taxPolicy.calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class)))
+		   .thenReturn(new Tax(new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Podatek za cos tam."));
 	}
 
 	@Test
 	public void firstTestCase() {
-		Mockito.when(taxPolicy.calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class)))
-			   .thenReturn(new Tax(new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Podatek za cos tam."));
-
+	
 		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Standard", ProductType.STANDARD,new Date());
 		Money totalCost = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
 		RequestItem item = new RequestItem(productData, 10, totalCost);
@@ -52,5 +53,23 @@ public class BookKeeperTest {
 		assertThat(invoice.getItems().size(), Matchers.is(1));
 		assertThat(invoice.getItems().get(0).getProduct(), Matchers.is(productData));
 	}
+	
+	@Test
+	public void secondTestCase() {
+		
+		ProductData productData = new ProductData(Id.generate(),new Money(new BigDecimal(1000), Currency.getInstance("EUR")), "Standard", ProductType.STANDARD,new Date());
+		Money totalCost = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
+		RequestItem item = new RequestItem(productData, 10, totalCost);
+		
+		ProductData productData2 = new ProductData(Id.generate(),new Money(new BigDecimal(2000), Currency.getInstance("EUR")), "Drug", ProductType.DRUG,new Date());
+		Money totalCost2 = new Money(new BigDecimal(10000), Currency.getInstance("EUR"));
+		RequestItem item2 = new RequestItem(productData2, 5, totalCost2);
+		invoiceRequest.add(item);
+		invoiceRequest.add(item2);
+
+		Invoice invoice = bookKeeper.issuance(invoiceRequest, taxPolicy);
+		Mockito.verify(taxPolicy, Mockito.times(2)).calculateTax(Mockito.any(ProductType.class), Mockito.any(Money.class));
+	}
+
 
 }
